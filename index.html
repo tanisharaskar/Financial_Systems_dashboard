@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Financial Systems Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  </head>
+  <body>
+    <div class="shell">
+
+      <!-- TOP BAR -->
+      <header class="topbar">
+        <div class="brand">Financial Systems Dashboard</div>
+        <div class="period">FY 2025</div>
+      </header>
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <nav>
+          <a class="nav-item active" onclick="showSection('consolidation', this)">Consolidation</a>
+          <a class="nav-item" onclick="showSection('cashflow', this)">Cash Flow</a>
+          <a class="nav-item" onclick="showSection('budget', this)">Budget vs Actual</a>
+          <a class="nav-item" onclick="showSection('pipeline', this)">Data Pipeline</a>
+          <a class="nav-item" onclick="showSection('close', this)">Close Status</a>
+        </nav>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="main">
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- SECTION 1: CONSOLIDATION                   -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div class="section active" id="sec-consolidation">
+
+          <div class="page-header">
+            <h1 class="page-title">Consolidated P&L</h1>
+            <p class="page-sub">All divisions · FY 2025 · USD millions</p>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">Total Revenue</div>
+              <div class="kpi-value">$10.0M</div>
+              <div class="kpi-delta up">▲ +6.2% vs Last Year</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Gross Profit</div>
+              <div class="kpi-value">$3.8M</div>
+              <div class="kpi-delta up">▲ +3.8% vs Last Year</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">EBITDA</div>
+              <div class="kpi-value">$2.1M</div>
+              <div class="kpi-delta up">▲ +1.4% vs Last Year</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Net Income</div>
+              <div class="kpi-value">$0.9M</div>
+              <div class="kpi-delta down">▼ -2.1% vs Last Year</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">P&L by Division</h2>
+              <div class="toggle-group">
+                <button class="toggle active" onclick="setPeriod('fy', event)">FY 2025</button>
+                <button class="toggle" onclick="setPeriod('q3', event)">Q3</button>
+                <button class="toggle" onclick="setPeriod('q2', event)">Q2</button>
+                <button class="toggle" onclick="setPeriod('q1', event)">Q1</button>
+              </div>
+            </div>
+            <table class="pl-table">
+              <thead>
+                <tr>
+                  <th>Division</th>
+                  <th class="num">Revenue</th>
+                  <th class="num">COGS</th>
+                  <th class="num">Gross Profit</th>
+                  <th class="num">EBITDA</th>
+                  <th class="num">Net Income</th>
+                  <th>GP Margin</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="dot" style="background:#1e56a0"></span>Manufacturing</td>
+                  <td class="num" id="mfg-rev">$4.9M</td>
+                  <td class="num red" id="mfg-cogs">$(3.1M)</td>
+                  <td class="num" id="mfg-gp">$1.8M</td>
+                  <td class="num" id="mfg-ebitda">$1.0M</td>
+                  <td class="num" id="mfg-ni">$0.4M</td>
+                  <td>
+                    <div class="bar-wrap">
+                      <div class="bar-fill" id="mfg-bar" style="width:37%;background:#1e56a0"></div>
+                      <span id="mfg-pct">37%</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="dot" style="background:#0f766e"></span>Distribution</td>
+                  <td class="num" id="dist-rev">$2.4M</td>
+                  <td class="num red" id="dist-cogs">$(1.6M)</td>
+                  <td class="num" id="dist-gp">$0.8M</td>
+                  <td class="num" id="dist-ebitda">$0.6M</td>
+                  <td class="num" id="dist-ni">$0.3M</td>
+                  <td>
+                    <div class="bar-wrap">
+                      <div class="bar-fill" id="dist-bar" style="width:33%;background:#0f766e"></div>
+                      <span id="dist-pct">33%</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="dot" style="background:#b45309"></span>Services</td>
+                  <td class="num" id="svc-rev">$1.6M</td>
+                  <td class="num red" id="svc-cogs">$(0.9M)</td>
+                  <td class="num" id="svc-gp">$0.7M</td>
+                  <td class="num" id="svc-ebitda">$0.3M</td>
+                  <td class="num" id="svc-ni">$0.1M</td>
+                  <td>
+                    <div class="bar-wrap">
+                      <div class="bar-fill" id="svc-bar" style="width:44%;background:#b45309"></div>
+                      <span id="svc-pct">44%</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="dot" style="background:#7c3aed"></span>Technology</td>
+                  <td class="num" id="tech-rev">$1.1M</td>
+                  <td class="num red" id="tech-cogs">$(0.8M)</td>
+                  <td class="num" id="tech-gp">$0.3M</td>
+                  <td class="num" id="tech-ebitda">$0.2M</td>
+                  <td class="num" id="tech-ni">$0.1M</td>
+                  <td>
+                    <div class="bar-wrap">
+                      <div class="bar-fill" id="tech-bar" style="width:27%;background:#7c3aed"></div>
+                      <span id="tech-pct">27%</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="elim-row">
+                  <td><span class="dot" style="background:#9ca3af"></span>Interco Eliminations</td>
+                  <td class="num red">$(0.3M)</td>
+                  <td class="num green">+$0.3M</td>
+                  <td class="num">—</td>
+                  <td class="num">—</td>
+                  <td class="num">—</td>
+                  <td>—</td>
+                </tr>
+                <tr class="total-row">
+                  <td>Consolidated Total</td>
+                  <td class="num" id="total-rev">$10.0M</td>
+                  <td class="num">$(6.2M)</td>
+                  <td class="num" id="total-gp">$3.8M</td>
+                  <td class="num" id="total-ebitda">$2.1M</td>
+                  <td class="num" id="total-ni">$0.9M</td>
+                  <td>
+                    <div class="bar-wrap">
+                      <div class="bar-fill" id="total-bar" style="width:38%;background:#1e56a0"></div>
+                      <span id="total-pct">38%</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Monthly Revenue — FY 2025</h2>
+            </div>
+            <canvas id="revenueChart"></canvas>
+          </div>
+
+        </div>
+        <!-- END CONSOLIDATION -->
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- SECTION 2: CASH FLOW                       -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div class="section" id="sec-cashflow">
+
+          <div class="page-header">
+            <h1 class="page-title">Cash Flow Statement</h1>
+            <p class="page-sub">Inflows & outflows · FY 2025 · USD millions</p>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">Operating Inflows</div>
+              <div class="kpi-value green">+$12.0M</div>
+              <div class="kpi-delta up">▲ Cash received</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Operating Outflows</div>
+              <div class="kpi-value red">-$9.1M</div>
+              <div class="kpi-delta down">▼ Cash spent</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Free Cash Flow</div>
+              <div class="kpi-value">$2.9M</div>
+              <div class="kpi-delta up">▲ +12.4% vs Last Year</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Closing Balance</div>
+              <div class="kpi-value">$4.2M</div>
+              <div class="kpi-delta up">▲ Healthy liquidity</div>
+            </div>
+          </div>
+
+          <div class="two-col">
+
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Operating Activities</h2>
+              </div>
+              <div class="cf-row cf-in"><span>↓ Customer receipts</span><strong class="green">+$11.2M</strong></div>
+              <div class="cf-row cf-in"><span>↓ Interest received</span><strong class="green">+$0.5M</strong></div>
+              <div class="cf-row cf-in"><span>↓ Tax refunds</span><strong class="green">+$0.3M</strong></div>
+              <div class="cf-row cf-out"><span>↑ Supplier payments</span><strong class="red">-$6.8M</strong></div>
+              <div class="cf-row cf-out"><span>↑ Employee wages</span><strong class="red">-$1.8M</strong></div>
+              <div class="cf-row cf-out"><span>↑ Tax paid</span><strong class="red">-$0.4M</strong></div>
+              <div class="cf-row cf-out"><span>↑ Interest paid</span><strong class="red">-$0.1M</strong></div>
+              <div class="cf-row cf-net"><span>Net Operating Cash Flow</span><strong>+$2.9M</strong></div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Investing Activities</h2>
+              </div>
+              <div class="cf-row cf-in"><span>↓ Asset disposals</span><strong class="green">+$0.4M</strong></div>
+              <div class="cf-row cf-out"><span>↑ Capital expenditure</span><strong class="red">-$1.2M</strong></div>
+              <div class="cf-row cf-out"><span>↑ Acquisitions</span><strong class="red">-$0.5M</strong></div>
+              <div class="cf-row cf-net"><span>Net Investing</span><strong class="red">-$1.3M</strong></div>
+
+              <div class="card-header" style="margin-top:20px">
+                <h2 class="card-title">Financing Activities</h2>
+              </div>
+              <div class="cf-row cf-in"><span>↓ Debt drawdown</span><strong class="green">+$1.0M</strong></div>
+              <div class="cf-row cf-out"><span>↑ Debt repayment</span><strong class="red">-$0.6M</strong></div>
+              <div class="cf-row cf-out"><span>↑ Dividends paid</span><strong class="red">-$0.4M</strong></div>
+              <div class="cf-row cf-net"><span>Net Financing</span><strong class="red">-$0.0M</strong></div>
+            </div>
+
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Monthly Cash Balance — FY 2025</h2>
+            </div>
+            <canvas id="cashChart"></canvas>
+          </div>
+
+        </div>
+        <!-- END CASH FLOW -->
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- SECTION 3: BUDGET VS ACTUAL                -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div class="section" id="sec-budget">
+
+          <div class="page-header">
+            <h1 class="page-title">Budget vs Actual</h1>
+            <p class="page-sub">Variance analysis · FY 2025 · USD millions</p>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">Revenue Variance</div>
+              <div class="kpi-value green">+$0.42M</div>
+              <div class="kpi-delta up">▲ Favorable +2.4%</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">COGS Variance</div>
+              <div class="kpi-value red">-$0.18M</div>
+              <div class="kpi-delta down">▼ Unfavorable -1.3%</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">OpEx Variance</div>
+              <div class="kpi-value green">+$0.07M</div>
+              <div class="kpi-delta up">▲ Favorable +0.8%</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Net Income Variance</div>
+              <div class="kpi-value green">+$0.31M</div>
+              <div class="kpi-delta up">▲ Favorable +52.5%</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Variance by Division</h2>
+            </div>
+            <table class="pl-table">
+              <thead>
+                <tr>
+                  <th>Division</th>
+                  <th class="num">Budget</th>
+                  <th class="num">Actual</th>
+                  <th class="num">Variance $</th>
+                  <th class="num">Variance %</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="dot" style="background:#1e56a0"></span>Manufacturing</td>
+                  <td class="num">$4.5M</td>
+                  <td class="num">$4.9M</td>
+                  <td class="num green">+$0.4M</td>
+                  <td class="num green">+8.9%</td>
+                  <td><span class="badge badge-ok">Favorable</span></td>
+                </tr>
+                <tr>
+                  <td><span class="dot" style="background:#0f766e"></span>Distribution</td>
+                  <td class="num">$2.6M</td>
+                  <td class="num">$2.4M</td>
+                  <td class="num red">-$0.2M</td>
+                  <td class="num red">-7.7%</td>
+                  <td><span class="badge badge-bad">Unfavorable</span></td>
+                </tr>
+                <tr>
+                  <td><span class="dot" style="background:#b45309"></span>Services</td>
+                  <td class="num">$1.5M</td>
+                  <td class="num">$1.6M</td>
+                  <td class="num green">+$0.1M</td>
+                  <td class="num green">+6.7%</td>
+                  <td><span class="badge badge-ok">Favorable</span></td>
+                </tr>
+                <tr>
+                  <td><span class="dot" style="background:#7c3aed"></span>Technology</td>
+                  <td class="num">$1.1M</td>
+                  <td class="num">$1.1M</td>
+                  <td class="num">$0.0M</td>
+                  <td class="num">0.0%</td>
+                  <td><span class="badge badge-flat">On Target</span></td>
+                </tr>
+                <tr class="total-row">
+                  <td>Consolidated Total</td>
+                  <td class="num">$9.7M</td>
+                  <td class="num">$10.0M</td>
+                  <td class="num green">+$0.3M</td>
+                  <td class="num green">+3.1%</td>
+                  <td><span class="badge badge-ok">Favorable</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Budget vs Actual — Monthly Revenue</h2>
+            </div>
+            <canvas id="varChart"></canvas>
+          </div>
+
+        </div>
+        <!-- END BUDGET VS ACTUAL -->
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- SECTION 4: DATA PIPELINE                   -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div class="section" id="sec-pipeline">
+
+          <div class="page-header">
+            <h1 class="page-title">Data Pipeline</h1>
+            <p class="page-sub">GL → OneStream · Extraction, transformation, validation & load</p>
+          </div>
+
+          <div class="two-col">
+
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Pipeline Steps</h2>
+                <span class="badge badge-ok">Live</span>
+              </div>
+              <div class="pipeline-row">
+                <div class="pipeline-step done">1</div>
+                <div class="pipeline-info">
+                  <div class="pipeline-name">Extract — Great Plains SQL</div>
+                  <div class="pipeline-sub">1,248 rows pulled from GL_PROD</div>
+                </div>
+                <span class="badge badge-ok">✓ Done</span>
+              </div>
+              <div class="pipeline-row">
+                <div class="pipeline-step done">2</div>
+                <div class="pipeline-info">
+                  <div class="pipeline-name">Transform — Account Mapping</div>
+                  <div class="pipeline-sub">Rules v3.2 applied · 0 unmapped</div>
+                </div>
+                <span class="badge badge-ok">✓ Done</span>
+              </div>
+              <div class="pipeline-row">
+                <div class="pipeline-step warn">3</div>
+                <div class="pipeline-info">
+                  <div class="pipeline-name">Validate — Reconciliation</div>
+                  <div class="pipeline-sub">Debits = Credits · 3 warnings flagged</div>
+                </div>
+                <span class="badge badge-warn">⚠ Warnings</span>
+              </div>
+              <div class="pipeline-row">
+                <div class="pipeline-step done">4</div>
+                <div class="pipeline-info">
+                  <div class="pipeline-name">Load — OneStream API</div>
+                  <div class="pipeline-sub">Consolidation triggered successfully</div>
+                </div>
+                <span class="badge badge-ok">✓ Done</span>
+              </div>
+              <div class="pipeline-row">
+                <div class="pipeline-step done">5</div>
+                <div class="pipeline-info">
+                  <div class="pipeline-name">Notify — Close Email</div>
+                  <div class="pipeline-sub">Sent to 12 recipients · 4m 01s total</div>
+                </div>
+                <span class="badge badge-ok">✓ Done</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Integration Health</h2>
+              </div>
+              <div class="health-row">
+                <div class="health-label">Great Plains → OneStream</div>
+                <div class="health-bar-wrap">
+                  <div class="health-bar" style="width:98%;background:#166534"></div>
+                </div>
+                <span class="green" style="font-size:12px;font-weight:600;width:36px;text-align:right">98%</span>
+              </div>
+              <div class="health-row">
+                <div class="health-label">Enablon → ESG Module</div>
+                <div class="health-bar-wrap">
+                  <div class="health-bar" style="width:94%;background:#166534"></div>
+                </div>
+                <span class="green" style="font-size:12px;font-weight:600;width:36px;text-align:right">94%</span>
+              </div>
+              <div class="health-row">
+                <div class="health-label">Concur → AP Ledger</div>
+                <div class="health-bar-wrap">
+                  <div class="health-bar" style="width:81%;background:#d97706"></div>
+                </div>
+                <span style="color:#d97706;font-size:12px;font-weight:600;width:36px;text-align:right">81%</span>
+              </div>
+              <div class="health-row">
+                <div class="health-label">Finario → CapEx Cube</div>
+                <div class="health-bar-wrap">
+                  <div class="health-bar" style="width:100%;background:#166534"></div>
+                </div>
+                <span class="green" style="font-size:12px;font-weight:600;width:36px;text-align:right">100%</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Automation Log — Dec 2025 Run</h2>
+              <button class="toggle" onclick="replayLog()">↺ Replay</button>
+            </div>
+            <div class="terminal" id="log-el"></div>
+          </div>
+
+        </div>
+        <!-- END DATA PIPELINE -->
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- SECTION 5: CLOSE STATUS                    -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div class="section" id="sec-close">
+
+          <div class="page-header">
+            <h1 class="page-title">Month-End Close Status</h1>
+            <p class="page-sub">December 2025 · Corporate close checklist</p>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Close Checklist</h2>
+              <span class="badge badge-ok">7 of 8 Complete</span>
+            </div>
+            <table class="pl-table">
+              <thead>
+                <tr>
+                  <th>Task</th>
+                  <th>Owner</th>
+                  <th>System</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Trial balance extraction: all divisions</td>
+                  <td style="color:#6b7280">Finance Systems</td>
+                  <td style="color:#6b7280">Great Plains</td>
+                  <td style="color:#6b7280;font-size:12px">Dec 3</td>
+                  <td><span class="badge badge-ok">Complete</span></td>
+                </tr>
+                <tr>
+                  <td>Intercompany reconciliation & elimination</td>
+                  <td style="color:#6b7280">Corp Accounting</td>
+                  <td style="color:#6b7280">OneStream</td>
+                  <td style="color:#6b7280;font-size:12px">Dec 5</td>
+                  <td><span class="badge badge-ok">Complete</span></td>
+                </tr>
+                <tr>
+                  <td>Concur T&E expense allocation</td>
+                  <td style="color:#6b7280">AP Team</td>
+                  <td style="color:#6b7280">Concur</td>
+                  <td style="color:#6b7280;font-size:12px">Dec 6</td>
+                  <td><span class="badge badge-warn">In Review</span></td>
+                </tr>
+                <tr>
+                  <td>ESG & sustainability data load</td>
+                  <td style="color:#6b7280">Finance Systems</td>
+                  <td style="color:#6b7280">Enablon</td>
+                  <td style="color:#6b7280;font-size:12px">Dec 7</td>
+                  <td><span class="badge badge-ok">Complete</span></td>
+                </tr>
+                <tr>
+                  <td>CapEx cube update & reconciliation</td>
+                  <td style="color:#6b7280">FP&A</td>
+                  <td style="color:#6b7280">Finario</td>
+                  <td style="color:#6b7280;font-size:12px">Dec 8</td>
+                  <td><span class="badge badge-ok">Complete</span></td>
+                </tr>
+                <tr>
+                  <td>OneStream consolidation run</td>
+                  <td style="color:#6b7280">Finance Systems</td>
+                  <td style="color:#6b7280">OneStream</td>
+                  <td style="color:#6b7280;font-size:12px">Dec 9</td>
+                  <td><span class="badge badge-ok">Complete</span></td>
+                </tr>
+                <tr>
+                  <td>SOX control attestation & sign-off</td>
+                  <td style="color:#6b7280">Internal Audit</td>
+                  <td style="color:#6b7280">OneStream</td>
+                  <td style="color:#6b7280;font-size:12px">Dec 12</td>
+                  <td><span class="badge badge-ok">Complete</span></td>
+                </tr>
+                <tr>
+                  <td>Board reporting package distribution</td>
+                  <td style="color:#6b7280">Corp Finance</td>
+                  <td style="color:#6b7280">OneStream</td>
+                  <td style="color:#6b7280;font-size:12px">Dec 14</td>
+                  <td><span class="badge badge-flat">Scheduled</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <!-- END CLOSE STATUS -->
+
+        <!-- END ACCESS & SOX -->
+
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
